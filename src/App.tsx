@@ -1,6 +1,6 @@
 import { SxProps } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SlicerPricing } from './components';
 import { bgPatternDesktop } from './utils/assets';
 
@@ -32,18 +32,35 @@ const appStyle: styledApp = {
     
     '@media screen and (max-width: 440px)': {
       height: '100%',
+      backgroundImage: 'none',
     },
   },
 };
 
 
 const App:React.FC<{}> = () => {
+  const [data, setData] = useState({
+    price:50,
+    time:'month' //month or year
+  });
+
+  const handleSettingPrince = (price: number, time: string) => {
+    setData(prevData => {
+      const newData = { ...prevData, price: price, time: time };
+      return newData;
+    });
+  };
+  
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
     <>
       <Box sx={appStyle.topContainer}>
       </Box>
       <Box sx={appStyle.appContainer}>
-        <SlicerPricing />
+        <SlicerPricing handleSetting={handleSettingPrince} price={data.price} min={0} max={100} />
       </Box>
     </>
   )
